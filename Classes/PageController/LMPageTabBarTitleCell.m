@@ -64,6 +64,7 @@
         self.titleLabel = [[UILabel alloc] initWithFrame:self.bounds];
         self.titleLabel.textColor = [UIColor blackColor];
         self.titleLabel.font = [UIFont systemFontOfSize:17.0f];
+        self.titleLabel.textAlignment =NSTextAlignmentCenter;
         
         [self.contentView addSubview:self.titleLabel];
     }
@@ -78,9 +79,16 @@
 }
 
 
+
 - (void)setupTitleFromColor:(UIColor *)fromColor toColor:(UIColor *)toColor progress:(CGFloat)progress {
     UIColor *newColor = [UIColor calculateColorWithFromColor:fromColor toColor:toColor progress:progress];
     self.titleLabel.textColor = newColor;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    self.titleLabel.frame = self.bounds;
 }
 
 #pragma mark private
