@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TYPagerController.h"
 @class LMPageTabBar;
 @class LMPageTabController;
 
@@ -28,6 +27,8 @@
 - (NSInteger)numberOfControllersForPageController:(LMPageTabController *)pageController;
 - (UIViewController *)pageController:(LMPageTabController *)pageController controllerForIndex:(NSInteger)index;
 @end
+
+@class TYPagerController;
 
 @interface LMPageTabController : UIViewController
 
