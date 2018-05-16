@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 @class LMPageTabBar;
-@class LMPageTabController;
+@class TYPagerController;
+@protocol LMPageTabControllerDelegate, LMPageTabControllerDataSource;
+
 
 @protocol LMPageTabControllerDelegate <NSObject>
 @optional
@@ -28,7 +30,6 @@
 - (UIViewController *)pageController:(LMPageTabController *)pageController controllerForIndex:(NSInteger)index;
 @end
 
-@class TYPagerController;
 
 @interface LMPageTabController : UIViewController
 
@@ -51,3 +52,5 @@
 @property (nonatomic, assign) BOOL scrollEnable;
 @property (nonatomic, assign, readonly) NSUInteger currentIndex;
 @end
+
+
