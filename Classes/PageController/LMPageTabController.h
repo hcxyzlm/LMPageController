@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+
 @class LMPageTabBar;
 @class TYPagerController;
+@class LMPageTabController;
 @protocol LMPageTabControllerDelegate, LMPageTabControllerDataSource;
 
 
