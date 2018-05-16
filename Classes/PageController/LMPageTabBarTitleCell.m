@@ -59,6 +59,18 @@
     // Initialization code
 }
 
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        self.titleLabel = [[UILabel alloc] initWithFrame:self.bounds];
+        self.titleLabel.textColor = [UIColor blackColor];
+        self.titleLabel.font = [UIFont systemFontOfSize:17.0f];
+        
+        [self.contentView addSubview:self.titleLabel];
+    }
+    
+    return self;
+}
+
 - (void)setupDataWithTitle:(NSString *)title font:(UIFont *)font color:(UIColor *)color {
     self.titleLabel.text = title;
     self.titleLabel.font = font;

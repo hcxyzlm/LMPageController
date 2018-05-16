@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description  = "基于TYPagerController的选项卡封装,便于集成"
 
-  s.homepage     = "http://EXAMPLE/LMPageController"
+  s.homepage     = "https://github.com/hcxyzlm/LMPageController"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -78,7 +78,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/hcxyzlm/LMPageController.git", :tag => "#{s.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #

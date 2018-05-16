@@ -30,10 +30,10 @@ static NSString *const kPageTabBarTitleCellReuseIdentifier = @"PageTabBarTitleCe
         _contentInset = UIEdgeInsetsMake(0, 15.0, 0, 15.0);
         _titleFont = [UIFont systemFontOfSize:17.0];
         _selectTitleFont = [UIFont boldSystemFontOfSize:17.0];
-        _titleColor = [UIColor grayColor];
-        _selectedTitleColor = UIColorFromRGB(0xf39c11);
+        _titleColor = [UIColor blackColor];
+        _selectedTitleColor = [UIColor orangeColor];
         _indicatorViewWidth = kPageTabBarIndicatorViewWidth;
-        _indicatorViewColor = UIColorFromRGB(0xf39c11);
+        _indicatorViewColor = [UIColor orangeColor];
         _showRightFadeTransition = YES;
     }
     return self;
@@ -63,7 +63,6 @@ UICollectionViewDataSource
 @property (nonatomic, strong) UIView *indicatorView; ///< 底部指示器View
 
 @property (nonatomic, assign) NSInteger currentSelectIndex;
-@property (nonatomic, strong) MASConstraint *collectionViewWidthConstraint;
 
 @end
 
@@ -80,13 +79,11 @@ UICollectionViewDataSource
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    // 这里宽度要加1，否则宽度不够，会跳一下
-    if (self.scrollEnable == NO) {
-        self.collectionViewWidthConstraint.mas_equalTo(self.collectionView.contentSize.width + 1.0);
-    }
-    else {
-        self.collectionViewWidthConstraint.mas_equalTo(CGRectGetWidth(self.frame));
-    }
+    
+    CGRect frame = CGRectMake(0, CGRectGetHeight(self.bounds)-0.5, CGRectGetWidth(self.bounds), 0.5);
+    self.separateLine.frame = frame;
+    
+    self.collectionView.frame = self.bounds;
     
     [self moveIndicatorViewToIndex:self.currentSelectIndex animation:NO];
 }
@@ -230,7 +227,7 @@ UICollectionViewDataSource
         layout.minimumLineSpacing = self.style.itemSpace;
         layout.minimumInteritemSpacing = self.style.itemSpace;
         layout.sectionInset = self.style.contentInset;
-        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:layout];
         collectionView.delegate = self;
         collectionView.dataSource = self;
         collectionView.backgroundColor = self.style.backgroundColor;
@@ -240,12 +237,7 @@ UICollectionViewDataSource
             collectionView.prefetchingEnabled = NO;
         }
         [self addSubview:collectionView];
-        [collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.bottom.equalTo(self);
-            make.centerX.equalTo(self);
-            self.collectionViewWidthConstraint = make.width.mas_equalTo(200.0);
-        }];
-        [collectionView registerNib:[UINib nibWithNibName:NSStringFromClass([LMPageTabBarTitleCell class]) bundle:nil] forCellWithReuseIdentifier:kPageTabBarTitleCellReuseIdentifier];
+        [collectionView registerClass:LMPageTabBarTitleCell.class  forCellWithReuseIdentifier:kPageTabBarTitleCellReuseIdentifier];
         collectionView;
     });
     
@@ -261,10 +253,6 @@ UICollectionViewDataSource
         UIView *view = [[UIView alloc] init];
         [self addSubview:view];
         view.backgroundColor = [UIColor grayColor];
-        [view mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.bottom.equalTo(view.superview);
-            make.height.mas_equalTo(0.5);
-        }];
         [view.superview bringSubviewToFront:view];
         view.hidden = YES;
         view;

@@ -11,7 +11,7 @@
 @class LMPageTabBarStyle;
 
 @interface LMPageTabBarTitleCell : UICollectionViewCell<LMPageTabBarTitleCellProtocol>
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (strong, nonatomic) UILabel *titleLabel;
 - (void)setupDataWithTitle:(NSString *)title font:(UIFont *)font color:(UIColor *)color;
 
 @end
