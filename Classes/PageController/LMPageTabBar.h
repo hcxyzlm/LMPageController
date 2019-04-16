@@ -10,13 +10,12 @@
 #import "LMPageTabBarTitleCellProtocol.h"
 @class LMPageTabBar;
 
-#define kPageTabBarHeight 40.0
-#define kPageTabBarHeightInNavBar 40.0
-
 /// pageTabBar的样式
 @interface LMPageTabBarStyle : NSObject
 @property (class, nonatomic, strong, readonly) LMPageTabBarStyle *defaultStyle;
 
+@property (nonatomic, assign) CGFloat pageViewHeight; ///< page width, 一般为屏幕的宽度
+@property (nonatomic, assign) CGFloat pageViewWith; ///< page height, 一般为40
 @property (nonatomic, strong) UIColor *backgroundColor; ///< 背景颜色，默认白色
 @property (nonatomic, assign) CGFloat itemSpace; ///< 按钮间的间距，默认20.0pt
 @property (nonatomic, assign) UIEdgeInsets contentInset; ///< 按钮区域（CollectionView）的缩进，默认UIEdgeInsetsMake(0, 15.0, 0, 15.0)
@@ -25,9 +24,11 @@
 @property (nonatomic, strong) UIColor *titleColor; ///< 标题颜色，默认#333332
 @property (nonatomic, strong) UIColor *selectedTitleColor; ///< 选中的标题颜色，默认#f39f19
 @property (nonatomic, assign) CGFloat indicatorViewWidth; ///< 指示器的默认宽度，默认18pt
+@property (nonatomic, assign) CGFloat indicatorViewHeight; ///< 指示器的默认高度，默认2pt
 @property (nonatomic, strong) UIColor *indicatorViewColor; ///< 指示器的颜色，默认#f39f19
-@property (nonatomic, assign) BOOL showRightFadeTransition; ///< 是否显示右侧渐隐过渡效果，默认可以滚动时为YES，不可滚动时为NO
-
+@property (nonatomic, assign) BOOL scrollIndicatorTransition; ///< 是否显示滚动时指示器的动画
+@property (nonatomic, strong) UIColor *separateLineViewColor; ///< 分隔条的颜色，默认#EDEDED
+@property (nonatomic, assign) CGFloat separateLineHeight; ///< 分隔条的高度，默认1
 @end
 
 

@@ -41,7 +41,6 @@ fprintf(stderr, "-------\n");                                               \
     }
     return self;
 }
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupPageController];

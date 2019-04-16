@@ -8,10 +8,6 @@
 
 #import "LMPageTabBar.h"
 #import "LMPageTabBarTitleCell.h"
-//#import "LMMyMessageTabItemCell.h"
-
-#define kPageTabBarIndicatorViewWidth 19.0
-#define kPageTabBarIndicatorViewHeight 3.0
 
 /// 滚动的方向
 typedef NS_ENUM(NSUInteger, LMPageTabBarScrollDirection) {
@@ -25,6 +21,8 @@ static NSString *const kPageTabBarTitleCellReuseIdentifier = @"PageTabBarTitleCe
 
 - (instancetype)init {
     if (self = [super init]) {
+        _pageViewWith  = UIScreen.mainScreen.bounds.size.width;
+        _pageViewHeight = 40;
         _backgroundColor = [UIColor whiteColor];
         _itemSpace = 20.0;
         _contentInset = UIEdgeInsetsMake(0, 15.0, 0, 15.0);
@@ -32,9 +30,12 @@ static NSString *const kPageTabBarTitleCellReuseIdentifier = @"PageTabBarTitleCe
         _selectTitleFont = [UIFont boldSystemFontOfSize:17.0];
         _titleColor = [UIColor blackColor];
         _selectedTitleColor = [UIColor orangeColor];
-        _indicatorViewWidth = kPageTabBarIndicatorViewWidth;
+        _indicatorViewWidth = 19;
+        _indicatorViewHeight = 2;
         _indicatorViewColor = [UIColor orangeColor];
-        _showRightFadeTransition = YES;
+        _scrollIndicatorTransition = YES;
+        _separateLineViewColor = UIColor.grayColor;
+        _separateLineHeight = 1;
     }
     return self;
 }
@@ -80,7 +81,7 @@ UICollectionViewDataSource
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    CGRect frame = CGRectMake(0, CGRectGetHeight(self.bounds)-0.5, CGRectGetWidth(self.bounds), 0.5);
+    CGRect frame = CGRectMake(0, CGRectGetHeight(self.bounds)- _style.separateLineHeight, CGRectGetWidth(self.bounds), _style.separateLineHeight);
     self.separateLine.frame = frame;
     
     self.collectionView.frame = self.bounds;
@@ -242,8 +243,8 @@ UICollectionViewDataSource
     });
     
     _indicatorView = ({
-        CGFloat y = CGRectGetHeight(self.frame) - kPageTabBarIndicatorViewHeight;
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, y, kPageTabBarIndicatorViewWidth, kPageTabBarIndicatorViewHeight)];
+        CGFloat y = CGRectGetHeight(self.frame) - self.style.indicatorViewHeight;
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, y, self.style.indicatorViewWidth, self.style.indicatorViewHeight)];
         view.backgroundColor = self.style.indicatorViewColor;
         [self.collectionView addSubview:view];
         view;
@@ -252,9 +253,8 @@ UICollectionViewDataSource
     _separateLine = ({
         UIView *view = [[UIView alloc] init];
         [self addSubview:view];
-        view.backgroundColor = [UIColor grayColor];
+        view.backgroundColor = _style.separateLineViewColor;
         [view.superview bringSubviewToFront:view];
-        view.hidden = YES;
         view;
     });
 }
@@ -283,26 +283,26 @@ UICollectionViewDataSource
     CGFloat percent = progress <= 0.5 ? (progress / 0.5) : ((progress - 0.5) / 0.5);
     CGFloat finalW = 0;
     CGFloat finalX = 0;
-    CGFloat originX = fromCellMidX - kPageTabBarIndicatorViewWidth / 2.0;
+    CGFloat originX = fromCellMidX - self.style.indicatorViewWidth / 2.0;
     if (fromCellMidX > toCellMidX) {
         // 左移
         if (progress <= 0.5) {
-            finalW = kPageTabBarIndicatorViewWidth + fabs(fromCellMidX - toCellMidX) * percent;
-            finalX = originX - (finalW - kPageTabBarIndicatorViewWidth);
+            finalW = self.style.indicatorViewWidth + fabs(fromCellMidX - toCellMidX) * percent;
+            finalX = originX - (finalW - self.style.indicatorViewWidth);
         }
         else {
-            finalW = kPageTabBarIndicatorViewWidth + fabs(fromCellMidX - toCellMidX) * (1 - percent);
+            finalW = self.style.indicatorViewWidth + fabs(fromCellMidX - toCellMidX) * (1 - percent);
             finalX = originX - (fromCellMidX - toCellMidX);
         }
     }
     else {
         // 右移
         if (progress <= 0.5) {
-            finalW = kPageTabBarIndicatorViewWidth + fabs(fromCellMidX - toCellMidX) * percent;
+            finalW = self.style.indicatorViewWidth + fabs(fromCellMidX - toCellMidX) * percent;
             finalX = originX;
         }
         else {
-            finalW = kPageTabBarIndicatorViewWidth + fabs(fromCellMidX - toCellMidX) * (1.0 - percent);
+            finalW = self.style.indicatorViewWidth + fabs(fromCellMidX - toCellMidX) * (1.0 - percent);
             finalX = originX + percent * fabs(fromCellMidX - toCellMidX);
         }
     }
@@ -316,11 +316,13 @@ UICollectionViewDataSource
     if (index >= [self numberOfTitle]) {
         return;
     }
-    CGRect fromCellFrame = [self cellPositionWithIndexPath:[NSIndexPath indexPathForItem:self.currentSelectIndex inSection:0]];
-    CGRect toCellFrame = [self cellPositionWithIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
-    CGFloat fromCellMidX = CGRectGetMidX(fromCellFrame);
-    CGFloat toCellMidX = CGRectGetMidX(toCellFrame);
-    self.indicatorView.frame = [self calculateIndicatorViewWithFromCellMidX:fromCellMidX toCellMidX:toCellMidX progress:progress];
+    if (self.style.scrollIndicatorTransition) {
+        CGRect fromCellFrame = [self cellPositionWithIndexPath:[NSIndexPath indexPathForItem:self.currentSelectIndex inSection:0]];
+        CGRect toCellFrame = [self cellPositionWithIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
+        CGFloat fromCellMidX = CGRectGetMidX(fromCellFrame);
+        CGFloat toCellMidX = CGRectGetMidX(toCellFrame);
+        self.indicatorView.frame = [self calculateIndicatorViewWithFromCellMidX:fromCellMidX toCellMidX:toCellMidX progress:progress];
+    }
 }
 
 - (void)updateTitleColorToIndex:(NSInteger)index progress:(CGFloat)progress {
@@ -360,13 +362,13 @@ UICollectionViewDataSource
 - (void)moveIndicatorViewToIndex:(NSUInteger)index animation:(BOOL)animation {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
     CGRect cellFrame = [self cellPositionWithIndexPath:indexPath];
-    CGFloat moveToPositionX = CGRectGetMidX(cellFrame) - kPageTabBarIndicatorViewWidth / 2.0;
-    CGFloat moveToPositionY = CGRectGetHeight(self.frame) - kPageTabBarIndicatorViewHeight;
+    CGFloat moveToPositionX = CGRectGetMidX(cellFrame) - self.style.indicatorViewWidth / 2.0;
+    CGFloat moveToPositionY = CGRectGetHeight(self.frame) - self.style.indicatorViewHeight;
     CGRect originFrame = self.indicatorView.frame;
     originFrame.origin = CGPointMake(moveToPositionX, moveToPositionY);
-    originFrame.size.width = kPageTabBarIndicatorViewWidth;
+    originFrame.size.width = self.style.indicatorViewWidth;
     if (animation) {
-        [UIView animateWithDuration:0.2 animations:^{
+        [UIView animateWithDuration:0.1 animations:^{
             self.indicatorView.frame = originFrame;
         }];
     }

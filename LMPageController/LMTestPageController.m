@@ -32,7 +32,10 @@ LMPageTabBarDataSource>
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.pageTabBar = [[LMPageTabBar alloc] initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, 44) style:[LMPageTabBarStyle defaultStyle]];
+    LMPageTabBarStyle *style =  [LMPageTabBarStyle defaultStyle];
+    style.itemSpace = 30;
+    style.scrollIndicatorTransition = YES;
+    self.pageTabBar = [[LMPageTabBar alloc] initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, 44) style:style];
     self.pageTabBar.delegate = self;
     self.pageTabBar.dateSource = self;
     [self.view addSubview:self.pageTabBar];

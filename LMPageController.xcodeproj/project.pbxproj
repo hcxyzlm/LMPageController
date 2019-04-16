@@ -201,13 +201,13 @@
 		AE5891CB20AC70B100ACA01B /* PageController */ = {
 			isa = PBXGroup;
 			children = (
-				AE5891CC20AC70B100ACA01B /* LMPageTabController.m */,
-				AE5891CD20AC70B100ACA01B /* LMPageTabBar.h */,
 				AE5891CE20AC70B100ACA01B /* LMPageTabBarTitleCell.m */,
 				AE5891CF20AC70B100ACA01B /* LMPageTabBarTitleCellProtocol.h */,
 				AE5891D020AC70B100ACA01B /* LMPageTabController.h */,
+				AE5891CC20AC70B100ACA01B /* LMPageTabController.m */,
 				AE5891D120AC70B100ACA01B /* LMPageTabBarTitleCell.h */,
 				AE5891D220AC70B100ACA01B /* LMPageTabBarTitleCell.xib */,
+				AE5891CD20AC70B100ACA01B /* LMPageTabBar.h */,
 				AE5891D320AC70B100ACA01B /* LMPageTabBar.m */,
 			);
 			path = PageController;
