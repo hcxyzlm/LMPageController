@@ -35,10 +35,18 @@ fprintf(stderr, "-------\n");                                               \
 @dynamic scrollEnable;
 
 - (instancetype)initWitPageTabBar:(LMPageTabBar *)tabBar {
+    if (self = [self initWithFrame:CGRectZero PageTabBar:tabBar]) {
+    }
+    return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame PageTabBar:(LMPageTabBar *)tabBar {
     if (self = [super init]) {
         _pageTabBar = tabBar;
         _loadAfterScrollEnd = NO;
+        self.view.frame = frame;
     }
+    
     return self;
 }
 - (void)viewDidLoad {

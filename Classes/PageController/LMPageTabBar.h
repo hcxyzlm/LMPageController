@@ -36,8 +36,8 @@
 - (NSUInteger)numberOfItemForPageTabBar:(LMPageTabBar *)pageTabBar;
 @optional
 /// 返回标题字符串，支持NSAttributeString
-- (NSString *)titleForPageTabBar:(LMPageTabBar *)pageTabBar atIndex:(NSUInteger)index;
-- (UICollectionViewCell<LMPageTabBarTitleCellProtocol> *)cellForPageTabBar:(LMPageTabBar *)pageTabBar atIndex:(NSUInteger)index;
+- (NSString *)titleForPageTabBar:(LMPageTabBar *)pageTabBar atIndex:(NSInteger)index;
+- (UICollectionViewCell<LMPageTabBarTitleCellProtocol> *)cellForPageTabBar:(LMPageTabBar *)pageTabBar atIndex:(NSInteger)index;
 @end
 
 @protocol LMPageTabBarDelegate <NSObject>

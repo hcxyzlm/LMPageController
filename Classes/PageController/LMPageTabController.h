@@ -38,6 +38,8 @@
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWitPageTabBar:(LMPageTabBar *)tabBar;
 
+- (instancetype)initWithFrame:(CGRect)frame PageTabBar:(LMPageTabBar *)tabBar;
+
 /// 是否等到滚动结束后再加载数据
 @property (nonatomic, assign) BOOL loadAfterScrollEnd;
 @property (nonatomic, strong, readonly) NSArray *visibleControllers;

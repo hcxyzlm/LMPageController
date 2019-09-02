@@ -85,7 +85,7 @@ UICollectionViewDataSource
     self.separateLine.frame = frame;
     
     self.collectionView.frame = self.bounds;
-    
+
     [self moveIndicatorViewToIndex:self.currentSelectIndex animation:NO];
 }
 
@@ -362,9 +362,10 @@ UICollectionViewDataSource
 - (void)moveIndicatorViewToIndex:(NSUInteger)index animation:(BOOL)animation {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
     CGRect cellFrame = [self cellPositionWithIndexPath:indexPath];
+    CGRect originFrame = self.indicatorView.frame;
+    originFrame.size.width = cellFrame.size.width;
     CGFloat moveToPositionX = CGRectGetMidX(cellFrame) - self.style.indicatorViewWidth / 2.0;
     CGFloat moveToPositionY = CGRectGetHeight(self.frame) - self.style.indicatorViewHeight;
-    CGRect originFrame = self.indicatorView.frame;
     originFrame.origin = CGPointMake(moveToPositionX, moveToPositionY);
     originFrame.size.width = self.style.indicatorViewWidth;
     if (animation) {
