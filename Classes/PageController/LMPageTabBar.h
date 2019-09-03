@@ -33,7 +33,7 @@
 
 
 @protocol LMPageTabBarDataSource <NSObject>
-- (NSUInteger)numberOfItemForPageTabBar:(LMPageTabBar *)pageTabBar;
+- (NSInteger)numberOfItemForPageTabBar:(LMPageTabBar *)pageTabBar;
 @optional
 /// 返回标题字符串，支持NSAttributeString
 - (NSString *)titleForPageTabBar:(LMPageTabBar *)pageTabBar atIndex:(NSInteger)index;

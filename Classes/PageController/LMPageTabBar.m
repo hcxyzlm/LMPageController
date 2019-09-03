@@ -9,11 +9,6 @@
 #import "LMPageTabBar.h"
 #import "LMPageTabBarTitleCell.h"
 
-/// 滚动的方向
-typedef NS_ENUM(NSUInteger, LMPageTabBarScrollDirection) {
-    LMPageTabBarScrollDirectionToLeft,
-    LMPageTabBarScrollDirectionToRight
-};
 
 static NSString *const kPageTabBarTitleCellReuseIdentifier = @"PageTabBarTitleCellReuseIdentifier";
 
@@ -110,7 +105,7 @@ UICollectionViewDataSource
     if (self.currentSelectIndex == index) { return; }
     
     index = (index < 0) ? 0 : index;
-    NSUInteger titlesCount = [self numberOfTitle];
+    NSInteger titlesCount = [self numberOfTitle];
     index = (index > titlesCount) ? (titlesCount - 1) : index;
     self.currentSelectIndex = index;
     [self transitionToIndex:index animation:animation];
