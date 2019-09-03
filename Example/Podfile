@@ -7,6 +7,7 @@ target 'LMPageContrllerExample' do
   pod 'SnapKit', '~> 5.0.1'
   pod 'LMPageController', :path => '../'
   pod 'RxSwift', '~> 5.0.0'
+  pod 'MJRefresh', '~> 3.2.0'
 
   # Pods for LMPageContrllerExample
 

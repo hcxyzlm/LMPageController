@@ -17,14 +17,19 @@ class ViewController: SegementSlideViewController {
     }
     
     override func viewControllerForPageTabController(_ pageController: LMPageTabController!, controllerFor index: Int) -> UIViewController! {
-        if index % 2 == 0 {
-            return YellowController()
-        } else {
-            return GreenController()
-        }
+        let vc = ContentViewController()
+        return vc
     }
     
-    override func tabbarTitles() -> [String] {
+    override var headerView: UIView? {
+        let headerView = UIImageView()
+        headerView.isUserInteractionEnabled = true
+        headerView.image = UIImage(named: "bg_working.png")
+        headerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 213)
+        return headerView
+    }
+    
+    override var tabbarTitles: [String] {
         let title = ["科技", "明星","体育", "电脑"]
         return title
     }

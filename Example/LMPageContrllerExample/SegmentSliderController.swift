@@ -10,10 +10,18 @@ import UIKit
 import LMPageController
 import SnapKit
 
+
 public enum BouncesType {
     case parent
     case child
 }
+
+@objc public protocol SegementSlideContentScrollViewDelegate where Self: UIViewController {
+    /// must implement this variable, when use class `SegementSlideViewController` or it's subClass.
+    /// you can ignore this variable, when you use `SegementSlideContentView` alone.
+    @objc optional var scrollView: UIScrollView { get }
+}
+
 
 /// SegementSlideViewController
 class SegementSlideViewController: UIViewController {
@@ -21,7 +29,7 @@ class SegementSlideViewController: UIViewController {
     // MARK: - Accessor
     
     internal var segementSlideScrollView: SegementSlideScrollView!
-    internal var segementSlideHeaderView: UIView!
+    internal var segementSlideHeaderView: SegementSlideHeaderView!
     internal var segmentTabBarView: LMPageTabBar!
     private var segmentPageController: LMPageTabController!
     
@@ -36,9 +44,6 @@ class SegementSlideViewController: UIViewController {
     
     public var slideScrollView: UIScrollView {
         return segementSlideScrollView
-    }
-    public var tabBarView: UIView {
-        return segmentTabBarView
     }
     public var pageController: UIViewController {
         return segmentPageController
@@ -74,14 +79,14 @@ class SegementSlideViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    open func tabbarTitles() -> [String] {
+    open var tabbarTitles: [String] {
         #if DEBUG
         assert(false, "must override this variable")
         #endif
         return []
     }
     
-    open func headerView() -> UIView? {
+    open var headerView: UIView? {
         if edgesForExtendedLayout.contains(.top) {
             #if DEBUG
             assert(false, "must override this variable")
@@ -98,11 +103,62 @@ class SegementSlideViewController: UIViewController {
         #endif
         return UIViewController()
     }
+    
+    open override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        layoutSegementSlideScrollView()
+    }
 }
 
 // MARK: - Public Methods
 extension SegementSlideViewController {
     
+    func layoutSegementSlideScrollView() {
+        let topLayoutLength: CGFloat
+        if edgesForExtendedLayout.contains(.top) {
+            topLayoutLength = 0
+        } else {
+            topLayoutLength = self.topLayoutLength
+        }
+        
+        segementSlideScrollView.snp.makeConstraints { (maker) in
+            maker.edges.equalToSuperview()
+        }
+        
+        segementSlideHeaderView.snp.makeConstraints { (maker) in
+            maker.left.equalToSuperview()
+            maker.width.equalToSuperview()
+            maker.top.equalTo(topLayoutLength)
+        }
+        segmentTabBarView.snp.makeConstraints { (maker) in
+            maker.left.equalToSuperview()
+            maker.width.equalToSuperview()
+            maker.height.equalTo(tabbarHeight)
+            maker.top.equalTo(213)
+        }
+        pageController.view.snp.makeConstraints { ( maker) in
+            maker.left.equalToSuperview()
+            maker.width.equalToSuperview()
+            maker.top.equalTo(segmentTabBarView.snp.bottom)
+            maker.height.equalTo(view.bounds.height - 213 - tabbarHeight)
+        }
+        
+        segementSlideHeaderView.layer.zPosition = -3
+        pageController.view.layer.zPosition = -2
+        segmentTabBarView.layer.zPosition = -1
+        
+        segementSlideHeaderView.config(headerView)
+        segementSlideHeaderView.layoutIfNeeded()
+        
+        let innerHeaderHeight = segementSlideHeaderView.frame.height
+        let contentSize = CGSize(
+            width: view.bounds.width,
+            height: topLayoutLength + innerHeaderHeight + tabbarHeight + contentViewHeight + 1
+        )
+        if segementSlideScrollView.contentSize != contentSize {
+            segementSlideScrollView.contentSize = contentSize
+        }
+    }
 }
 
 // MARK: - Private Methods
@@ -112,12 +168,9 @@ private extension SegementSlideViewController {
         extendedLayoutIncludesOpaqueBars = true
         edgesForExtendedLayout = []
         /// setup
-        segementSlideHeaderView = UIView()
+        segementSlideHeaderView = SegementSlideHeaderView()
         segementSlideScrollView = SegementSlideScrollView(frame: .zero)
         view.addSubview(segementSlideScrollView)
-        segementSlideScrollView.snp.makeConstraints { (maker) in
-            maker.edges.equalToSuperview()
-        }
         setupSlideHeaderView()
         setupSegmentTabBarView()
         setupSegmentTabBarController()
@@ -133,14 +186,9 @@ private extension SegementSlideViewController {
         style.titleFont = UIFont.systemFont(ofSize: 14)
         style.selectTitleFont = UIFont.boldSystemFont(ofSize: 14)
         style.indicatorViewWidth = 70
-        let tabBarView = LMPageTabBar(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 60), style: style)!
+        let tabBarView = LMPageTabBar(frame:.zero, style: style)!
         self.segmentTabBarView = tabBarView
         segementSlideScrollView.addSubview(tabBarView)
-        tabBarView.snp.makeConstraints { (maker) in
-            maker.left.right.equalToSuperview()
-            maker.height.equalTo(tabbarHeight)
-            maker.top.equalTo(segementSlideHeaderView.snp.bottom)
-        }
         tabBarView.delegate = self
         tabBarView.dateSource = self
     }
@@ -151,7 +199,6 @@ private extension SegementSlideViewController {
         segmentPageController.dataSource = self
         addChild(pageController)
         segementSlideScrollView.addSubview(segmentPageController.view)
-        segmentPageController.view.frame = CGRect()
     }
     
     func bindViewModel() {
@@ -168,7 +215,7 @@ extension SegementSlideViewController {
 extension SegementSlideViewController: LMPageTabBarDataSource, LMPageTabBarDelegate, LMPageTabControllerDelegate,  LMPageTabControllerDataSource {
     
     func numberOfControllers(forPageController pageController: LMPageTabController!) -> Int {
-        return self.tabbarTitles().count
+        return tabbarTitles.count
     }
     
     func pageController(_ pageController: LMPageTabController!, controllerFor index: Int) -> UIViewController! {
@@ -176,11 +223,11 @@ extension SegementSlideViewController: LMPageTabBarDataSource, LMPageTabBarDeleg
     }
     
     func numberOfItem(for pageTabBar: LMPageTabBar!) -> Int {
-        return self.tabbarTitles().count
+        return tabbarTitles.count
     }
     
     func title(for pageTabBar: LMPageTabBar!, at index: Int) -> String! {
-        let titleArray = self.tabbarTitles()
+        let titleArray = tabbarTitles
         guard index >= 0  && index < titleArray.count else {
             return ""
         }
