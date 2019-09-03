@@ -34,6 +34,7 @@ LMPageTabBarDataSource>
     
     LMPageTabBarStyle *style =  [LMPageTabBarStyle defaultStyle];
     style.itemSpace = 30;
+    style.indicatorViewWidth = 80;
     style.scrollIndicatorTransition = YES;
     self.pageTabBar = [[LMPageTabBar alloc] initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, 44) style:style];
     self.pageTabBar.delegate = self;
@@ -48,7 +49,7 @@ LMPageTabBarDataSource>
     self.pageController.dataSource = self;
     [self addChildViewController:self.pageController];
     [self.view addSubview:self.pageController.view];
-    self.titles = @[@"关注",@"推荐视频",@"视频",@"热点",@"科技",@"问答",@"互联网", @"音乐"];
+    self.titles = @[@"关注",@"推荐视频",@"视频131"];
 }
 
 
@@ -59,6 +60,11 @@ LMPageTabBarDataSource>
     return self.titles.count;
     
 }
+
+- (CGFloat)pageTabBar:(LMPageTabBar *)pageTabBar itemWidthAtIndex:(NSInteger)index {
+    return 80;
+}
+
 - (NSString *)titleForPageTabBar:(LMPageTabBar *)pageTabBar atIndex:(NSUInteger)index {
     
     return [self.titles objectAtIndex:index];
