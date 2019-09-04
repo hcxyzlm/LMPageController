@@ -18,6 +18,7 @@
 		AE19C5A4231D7E5D00F38BA5 /* SegementSlideScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE19C5A3231D7E5D00F38BA5 /* SegementSlideScrollView.swift */; };
 		AE2E0911231E596F0063389C /* SegementSlideHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2E0910231E596F0063389C /* SegementSlideHeaderView.swift */; };
 		AE2E0913231EC5520063389C /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2E0912231EC5520063389C /* ContentViewController.swift */; };
+		AE2E0915231ED6E90063389C /* SegementSlideViewController+scroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2E0914231ED6E90063389C /* SegementSlideViewController+scroll.swift */; };
 		ED79432D5077C8738318E380 /* Pods_LMPageContrllerExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF55480EE41EB2AD596F6B54 /* Pods_LMPageContrllerExample.framework */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +50,7 @@
 		AE19C5A3231D7E5D00F38BA5 /* SegementSlideScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegementSlideScrollView.swift; sourceTree = "<group>"; };
 		AE2E0910231E596F0063389C /* SegementSlideHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegementSlideHeaderView.swift; sourceTree = "<group>"; };
 		AE2E0912231EC5520063389C /* ContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
+		AE2E0914231ED6E90063389C /* SegementSlideViewController+scroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SegementSlideViewController+scroll.swift"; sourceTree = "<group>"; };
 		AF55480EE41EB2AD596F6B54 /* Pods_LMPageContrllerExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LMPageContrllerExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6DDE167497FACD81F3EE60B /* Pods-LMPageContrllerExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LMPageContrllerExampleTests.release.xcconfig"; path = "Target Support Files/Pods-LMPageContrllerExampleTests/Pods-LMPageContrllerExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		FC8CD2F426E80EE7E2835C83 /* Pods-LMPageContrllerExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LMPageContrllerExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-LMPageContrllerExampleTests/Pods-LMPageContrllerExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 		AE19C580231D769C00F38BA5 /* LMPageContrllerExample */ = {
 			isa = PBXGroup;
 			children = (
+				AE2E0914231ED6E90063389C /* SegementSlideViewController+scroll.swift */,
 				AE2E0912231EC5520063389C /* ContentViewController.swift */,
 				AE19C581231D769C00F38BA5 /* AppDelegate.swift */,
 				AE19C583231D769C00F38BA5 /* ViewController.swift */,
@@ -309,6 +312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE19C584231D769C00F38BA5 /* ViewController.swift in Sources */,
+				AE2E0915231ED6E90063389C /* SegementSlideViewController+scroll.swift in Sources */,
 				AE2E0911231E596F0063389C /* SegementSlideHeaderView.swift in Sources */,
 				AE19C582231D769C00F38BA5 /* AppDelegate.swift in Sources */,
 				AE19C5A2231D7C4200F38BA5 /* SegmentSliderController.swift in Sources */,
