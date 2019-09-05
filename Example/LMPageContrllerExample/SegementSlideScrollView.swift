@@ -8,7 +8,7 @@
 
 import UIKit
 
-internal class SegementSlideScrollView: UIScrollView {
+internal class SegementSlideScrollView: UIScrollView, UIGestureRecognizerDelegate {
     
 //    private var otherGestureRecognizers: [UIGestureRecognizer]?
 //
@@ -21,11 +21,11 @@ internal class SegementSlideScrollView: UIScrollView {
 //        fatalError("init(coder:) has not been implemented")
 //    }
 //
-//    internal func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    internal func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
 //        if let otherGestureRecognizers = otherGestureRecognizers, otherGestureRecognizers.contains(otherGestureRecognizer) {
 //            return false
 //        }
-//        return true
-//    }
+        return true
+    }
     
 }

@@ -33,6 +33,10 @@ class ViewController: SegementSlideViewController {
         let title = ["科技", "明星","体育", "电脑"]
         return title
     }
+    
+    override var bouncesType: BouncesType {
+        return .child
+    }
 }
 
 class YellowController: UIViewController {

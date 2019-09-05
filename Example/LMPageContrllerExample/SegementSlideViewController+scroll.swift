@@ -1,16 +1,18 @@
 //
-//  SegementSlideViewController+scroll.swift
-//  SegementSlide
+//  AppDelegate.swift
+//  LMPageContrllerExample
 //
-//  Created by Jiar on 2019/1/16.
-//  Copyright © 2019 Jiar. All rights reserved.
+//  Created by zhuo on 2019/9/3.
+//  Copyright © 2019 zhuo. All rights reserved.
 //
+
 
 import UIKit
 
 extension SegementSlideViewController {
     
     internal func parentScrollViewDidScroll(_ scrollView: UIScrollView) {
+        print("parentScrollViewDidScroll")
         scrollViewDidScroll(scrollView, isParent: true)
         let parentContentOffsetY = segementSlideScrollView.contentOffset.y
         switch innerBouncesType {
@@ -60,6 +62,7 @@ extension SegementSlideViewController {
     }
     
     internal func childScrollViewDidScroll(_ childScrollView: UIScrollView) {
+        print("childScrollViewDidScroll")
         scrollViewDidScroll(childScrollView, isParent: false)
         let parentContentOffsetY = segementSlideScrollView.contentOffset.y
         let childContentOffsetY = childScrollView.contentOffset.y

@@ -42,6 +42,9 @@ class SegementSlideViewController: UIViewController {
     internal var lastChildBouncesTranslationY: CGFloat = 0
     internal var waitTobeResetContentOffsetY: Set<Int> = Set()
     
+    private var viewControllers: [Int: SegementSlideContentScrollViewDelegate] = [:]
+    private var initSelectedIndex: Int?
+    
     public var slideScrollView: UIScrollView {
         return segementSlideScrollView
     }
@@ -51,7 +54,9 @@ class SegementSlideViewController: UIViewController {
     public var headerStickyHeight: CGFloat {
         let headerHeight = segementSlideHeaderView.frame.height.rounded(.up)
         if edgesForExtendedLayout.contains(.top) {
+            /// todo
             return headerHeight - topLayoutLength
+//            return headerHeight
         } else {
             return headerHeight
         }
@@ -67,6 +72,14 @@ class SegementSlideViewController: UIViewController {
         return .parent
     }
     
+    public var currentSegementSlideContentViewController: SegementSlideContentScrollViewDelegate? {
+        if let vc = segmentPageController?.currentViewController as? SegementSlideContentScrollViewDelegate {
+            return vc
+        }
+        
+        return nil
+    }
+    
     open var tabbarHeight: CGFloat {
         return 48
     }
@@ -76,6 +89,7 @@ class SegementSlideViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         bindViewModel()
+        observeScrollViewContentOffset()
         // Do any additional setup after loading the view.
     }
     
@@ -108,10 +122,23 @@ class SegementSlideViewController: UIViewController {
         super.viewDidLayoutSubviews()
         layoutSegementSlideScrollView()
     }
+    
+    private func observeScrollViewContentOffset() {
+        parentKeyValueObservation = segementSlideScrollView.observe(\.contentOffset, options: [.initial, .new, .old], changeHandler: { [weak self] (scrollView, change) in
+            guard let self = self else { return }
+            guard change.newValue != change.oldValue else { return }
+            self.parentScrollViewDidScroll(scrollView)
+        })
+    }
 }
 
 // MARK: - Public Methods
 extension SegementSlideViewController {
+    
+    public func reloadData() {
+        setupBounces()
+        layoutSegementSlideScrollView()
+    }
     
     func layoutSegementSlideScrollView() {
         let topLayoutLength: CGFloat
@@ -204,6 +231,18 @@ private extension SegementSlideViewController {
     func bindViewModel() {
         
     }
+    
+    func setupBounces() {
+        innerBouncesType = bouncesType
+        switch innerBouncesType {
+        case .parent:
+            canParentViewScroll = true
+            canChildViewScroll = false
+        case .child:
+            canParentViewScroll = true
+            canChildViewScroll = true
+        }
+    }
 }
 
 // MARK: - Event
@@ -215,8 +254,9 @@ extension SegementSlideViewController {
         }
         let collection = waitTobeResetContentOffsetY
         for index in collection {
-            guard index != currentIndex,
-                let scrollView = dequeueReusableViewController(at: index)?.scrollView else {
+            guard segmentPageController.currentIndex != index,
+                let vc = segmentPageController.visibleControllers[index] as? SegementSlideContentScrollViewDelegate,
+                let scrollView =  vc.scrollView else {
                     continue
             }
             waitTobeResetContentOffsetY.remove(index)
@@ -233,7 +273,23 @@ extension SegementSlideViewController: LMPageTabBarDataSource, LMPageTabBarDeleg
     }
     
     func pageController(_ pageController: LMPageTabController!, controllerFor index: Int) -> UIViewController! {
-        return viewControllerForPageTabController(pageController, controllerFor: index)
+        let vc = viewControllerForPageTabController(pageController, controllerFor: index)
+        return vc
+    }
+    
+    func pageController(_ pageController: LMPageTabController!, viewDidAppear viewController: UIViewController!, for index: Int) {
+        if let scrollVC = viewController as? SegementSlideContentScrollViewDelegate {
+            childKeyValueObservation?.invalidate()
+            if let scrollView = scrollVC.scrollView {
+                let keyValueObservation = scrollView.observe(\.contentOffset, options: [.new, .old], changeHandler: { [weak self] (scrollView, change) in
+                    guard let self = self else { return }
+                    guard change.newValue != change.oldValue else { return }
+                    self.childScrollViewDidScroll(scrollView)
+                })
+                self.childKeyValueObservation = keyValueObservation
+            }
+            
+        }
     }
     
     func numberOfItem(for pageTabBar: LMPageTabBar!) -> Int {

@@ -1,9 +1,9 @@
 //
-//  ContentViewController.swift
-//  Example
+//  AppDelegate.swift
+//  LMPageContrllerExample
 //
-//  Created by Jiar on 2018/12/13.
-//  Copyright © 2018 Jiar. All rights reserved.
+//  Created by zhuo on 2019/9/3.
+//  Copyright © 2019 zhuo. All rights reserved.
 //
 
 import UIKit
@@ -14,6 +14,7 @@ class ContentViewController: UITableViewController, SegementSlideContentScrollVi
     @objc var scrollView: UIScrollView {
         return tableView
     }
+    
     internal var refreshHandler: (() -> Void)? = nil
     
     override func viewDidLoad() {
