@@ -207,6 +207,7 @@ fprintf(stderr, "-------\n");                                               \
     pageController.layout.prefetchItemCount = 1;
     // 只有当scroll滚动动画停止时才加载pagerview，用于优化滚动时性能
     pageController.layout.addVisibleItemOnlyWhenScrollAnimatedEnd = self.loadAfterScrollEnd;
+    pageController.layout.progressAnimateEnabel = NO;
     pageController.dataSource = self;
     pageController.delegate = self;
     [self addChildViewController:pageController];
