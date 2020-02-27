@@ -12,6 +12,32 @@
 
 static NSString *const kPageTabBarTitleCellReuseIdentifier = @"PageTabBarTitleCellReuseIdentifier";
 
+@interface  LMCollectionViewLayout: UICollectionViewFlowLayout
+
+@property (nonatomic, strong) NSArray *cacheAttributes;
+
+
+@end
+
+@implementation LMCollectionViewLayout
+
+- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row >= self.cacheAttributes.count || indexPath.row < 0) {
+        return nil;
+    }
+    return [self.cacheAttributes objectAtIndex:indexPath.row];
+}
+
+- (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect {
+
+//calls super to get the array of layoutAttributes initialised by the base class
+    NSArray *array = [super layoutAttributesForElementsInRect:rect];
+    self.cacheAttributes = array;
+    return array;
+}
+
+@end
+
 @implementation LMPageTabBarStyle
 
 - (instancetype)init {
@@ -112,8 +138,9 @@ UICollectionViewDataSource
 }
 
 - (void)reloadTitles {
-    if (self.currentSelectIndex >= [self numberOfTitle]) {
-        self.currentSelectIndex = [self numberOfTitle] - 1;
+    if (self.currentSelectIndex <= [self numberOfTitle]
+        || self.currentSelectIndex >= [self numberOfTitle]) {
+        self.currentSelectIndex = 0;
     }
     [self.collectionView reloadData];
 
@@ -218,7 +245,7 @@ UICollectionViewDataSource
 - (void)setupSubviews {
     self.backgroundColor = self.style.backgroundColor;
     _collectionView = ({
-        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+        LMCollectionViewLayout *layout = [[LMCollectionViewLayout alloc] init];
         layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         layout.minimumLineSpacing = self.style.itemSpace;
         layout.minimumInteritemSpacing = self.style.itemSpace;
@@ -334,7 +361,7 @@ UICollectionViewDataSource
 
 - (CGRect)cellPositionWithIndexPath:(NSIndexPath *)indexPath {
     CGRect ret = CGRectZero;
-    UICollectionViewLayoutAttributes *attribute = [self.collectionView layoutAttributesForItemAtIndexPath:indexPath];
+    UICollectionViewLayoutAttributes *attribute = [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
     if (attribute) {
         ret = attribute.frame;
     }

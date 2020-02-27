@@ -85,4 +85,9 @@ LMPageTabBarDataSource>
     return vc;
 }
 
+- (void)pageController:(LMPageTabController *)pageController transitionToIndex:(NSInteger)toIndex animated:(BOOL)animated {
+    NSLog(@"toindex = %ld", toIndex);
+}
+
+
 @end
