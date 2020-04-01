@@ -128,7 +128,7 @@ UICollectionViewDataSource
 
 - (void)scrollToIndex:(NSInteger)index animation:(BOOL)animation {
     
-    if (self.currentSelectIndex == index) { return; }
+//    if (self.currentSelectIndex == index) { return; }
     
     index = (index < 0) ? 0 : index;
     NSInteger titlesCount = [self numberOfTitle];
